@@ -1,5 +1,17 @@
 let loop_selected = false;
 let currentSong = null;
+
+async function checkSara() {
+    try {
+        const rspData = await fetch("https://aac.saavncdn.com/060/05bb6ae7a01edcbd8e0d859d2fa1d83d_12.mp4");
+        const contentType = rspData.headers.get("content-type");
+        isBlocked = !(rspData.ok && contentType.includes("audio/mp4"));
+    }
+    catch {
+        isBlocked = true;
+    }
+}
+
 async function fetchAsArrayBuffer(url) {
     const response = await fetch(url);
     return response.arrayBuffer();
@@ -188,7 +200,12 @@ function playmySong(song) {
     let URL = song.downloadUrl.find(link => link.quality === '320kbps').link || song.downloadUrl[0];
     albumArt.src = artLink;
     //console.log(URL);
-    const downloadUrl = `/stream/?url=${encodeURIComponent(URL)}`;
+    if(isBlocked){
+        downloadUrl = `/stream/?url=${encodeURIComponent(URL)}`;
+    } 
+    else{
+        downloadUrl = URL;
+    }
     //console.log(downloadUrl);
     player.src = downloadUrl || "";
     player.play();
