@@ -1,3 +1,4 @@
+//chaos keeps the world in order
 let loop_selected = false;
 let currentSong = null;
 
