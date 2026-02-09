@@ -189,6 +189,12 @@ function createSongCard(song, songList) {
     songList.appendChild(card);
 }
 function playmySong(song) {
+    gtag('event', 'songPlayed', {
+        'event_category': 'playEvent',
+        'event_label': 'Play Button Clicked',
+        'song_id': song.id,  // Pass the purchase amount
+        'song_name': song.name
+      });
     currentSong = song;
     const player = document.getElementById("audio-player");
     const nowPlaying = document.getElementById("now-playing");
